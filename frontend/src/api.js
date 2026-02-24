@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Production API URL - your deployed backend
+// Production API URL - hardcoded for deployment
 const API_URL = 'https://hrms-lite-api-lrfv.onrender.com/api';
 
 export const api = axios.create({
