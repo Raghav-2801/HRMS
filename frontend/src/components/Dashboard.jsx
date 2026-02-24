@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { api } from '../api';
+import { api, API_BASE_URL } from '../api';
 
 function Dashboard() {
   const [stats, setStats] = useState(null);
@@ -16,51 +16,58 @@ function Dashboard() {
       setLoading(true);
       const [statsRes, empRes] = await Promise.all([
         api.get('/dashboard/stats'),
-        api.get('/employees')
+        api.get('/employees'),
       ]);
       setStats(statsRes.data);
       setEmployees(empRes.data.slice(0, 5)); // Show only first 5 employees
       setError(null);
     } catch (err) {
-      setError('Failed to load dashboard data. Make sure backend is running.');
+      const status = err.response?.status;
+      const detail = err.response?.data?.detail;
+      const message = detail
+        ? `Failed to load dashboard data: ${detail}`
+        : `Failed to load dashboard data. ${status ? `Status: ${status}. ` : ''}Check backend or CORS.`;
+      setError(`${message} API: ${API_BASE_URL}`);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
-  if (error) return <div className="alert alert-error">{error}</div>;
+  if (loading) return <div className='loading'>Loading dashboard...</div>;
+  if (error) return <div className='alert alert-error'>{error}</div>;
 
   return (
     <div>
-      <h2 style={{ marginBottom: '1.5rem', color: '#444' }}>Dashboard Overview</h2>
-      
+      <h2 style={{ marginBottom: '1.5rem', color: '#444' }}>
+        Dashboard Overview
+      </h2>
+
       {/* Stats Cards */}
-      <div className="stats-grid">
-        <div className="stat-card">
-          <div className="stat-value">{stats?.total_employees || 0}</div>
-          <div className="stat-label">Total Employees</div>
+      <div className='stats-grid'>
+        <div className='stat-card'>
+          <div className='stat-value'>{stats?.total_employees || 0}</div>
+          <div className='stat-label'>Total Employees</div>
         </div>
-        <div className="stat-card present">
-          <div className="stat-value">{stats?.total_present_today || 0}</div>
-          <div className="stat-label">Present Today</div>
+        <div className='stat-card present'>
+          <div className='stat-value'>{stats?.total_present_today || 0}</div>
+          <div className='stat-label'>Present Today</div>
         </div>
-        <div className="stat-card absent">
-          <div className="stat-value">{stats?.total_absent_today || 0}</div>
-          <div className="stat-label">Absent Today</div>
+        <div className='stat-card absent'>
+          <div className='stat-value'>{stats?.total_absent_today || 0}</div>
+          <div className='stat-label'>Absent Today</div>
         </div>
-        <div className="stat-card rate">
-          <div className="stat-value">{stats?.attendance_rate || 0}%</div>
-          <div className="stat-label">Attendance Rate</div>
+        <div className='stat-card rate'>
+          <div className='stat-value'>{stats?.attendance_rate || 0}%</div>
+          <div className='stat-label'>Attendance Rate</div>
         </div>
       </div>
 
       {/* Recent Employees */}
-      <div className="card">
+      <div className='card'>
         <h2>Recent Employees</h2>
         {employees.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">👥</div>
+          <div className='empty-state'>
+            <div className='empty-state-icon'>👥</div>
             <p>No employees yet. Add your first employee!</p>
           </div>
         ) : (
