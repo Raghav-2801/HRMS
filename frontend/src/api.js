@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-// API URL configuration
-// Local development: http://127.0.0.1:8000/api
-// Production: Replace with your Render backend URL + /api
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+// Production API URL - your deployed backend
+const API_URL = 'https://hrms-lite-api-lrfv.onrender.com/api';
 
 export const api = axios.create({
   baseURL: API_URL,
