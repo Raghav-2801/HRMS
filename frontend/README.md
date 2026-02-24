@@ -1,5 +1,12 @@
 # React + Vite
 
+## API Configuration
+
+This app reads the backend base URL from `VITE_API_URL`.
+
+- Local development: set `VITE_API_URL=http://localhost:8000`
+- Production: set `VITE_API_URL=https://your-backend-url.onrender.com`
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
