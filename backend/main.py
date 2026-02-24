@@ -172,3 +172,9 @@ def get_dashboard_stats():
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy", "message": "HRMS Lite API is running"}
+
+
+# For running locally
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
