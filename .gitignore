@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+.eggs/
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+
+# Environment / secrets
+.env
+*.env
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+nosetests.xml
+test_hrms.db
+hrms_local.db
+*.db
+
+# IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Misc
+mnt/
