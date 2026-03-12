@@ -137,7 +137,7 @@ See [API.md](API.md) for full documentation.
 
 ### Employee Management
 
-![Employees](https://iad.microlink.io/YPqjC1kQM_dKfQMFQr4yJk8PRpUSthvOWlkg-tlLlyklxxLs8LoOVb3H98N8HJnqM6gSq1dGvkiBSTV_9rHmgA.png)
+![Employees](https://iad.microlink.io/SOGlyxN2uKYG-anGs_ftPEzHU2boy2FlauPbOnM7S5AX6w5LqLXX6iAv_4OrtVQ4wpIzhaWZjEiYMwSzBn3Glg.png)
 
 ### Attendance Tracking
 
