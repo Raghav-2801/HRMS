@@ -7,46 +7,75 @@ export default function WakeUpScreen({ onReady }) {
   const [time, setTime] = useState(0)
 
   useEffect(() => {
-    const timer = setInterval(() => setTime(t => t + 1), 1000)
+    let stopped = false
+    let retryTimer
+
+    const timer = setInterval(() => {
+      setTime(t => t + 1)
+    }, 1000)
 
     const checkServer = async () => {
+      if (stopped) return
+
       try {
-        const res = await fetch(`${BASE_URL}/api/dashboard/stats`)
+        const res = await fetch(`${BASE_URL}/api/dashboard/stats`, {
+          cache: 'no-store'
+        })
+
         if (res.ok) {
-          setStatus('ready')
+          stopped = true
           clearInterval(timer)
-          setTimeout(onReady, 300)
+          clearTimeout(retryTimer)
+
+          setStatus('ready')
+
+          setTimeout(() => {
+            if (onReady) onReady()
+          }, 300)
+
           return
         }
-      } catch {}
+      } catch (e) {
+        console.log('Ping failed')
+      }
 
-      setTimeout(checkServer, 3000)
+      retryTimer = setTimeout(checkServer, 3000)
     }
 
     checkServer()
 
-    return () => clearInterval(timer)
-  }, [])
+    return () => {
+      stopped = true
+      clearInterval(timer)
+      clearTimeout(retryTimer)
+    }
+  }, [onReady])
 
   return (
-    <div style={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'sans-serif',
-      gap: 12
-    }}>
-      <div style={{
-        width: 30,
-        height: 30,
-        border: '4px solid #ddd',
-        borderTop: '4px solid #333',
-        borderRadius: '50%',
-        animation: 'spin 1s linear infinite'
-      }} />
+    <div
+      style={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'sans-serif',
+        gap: 12
+      }}
+    >
+      {/* Spinner */}
+      <div
+        style={{
+          width: 30,
+          height: 30,
+          border: '4px solid #ddd',
+          borderTop: '4px solid #333',
+          borderRadius: '50%',
+          animation: 'spin 1s linear infinite'
+        }}
+      />
 
+      {/* Loading */}
       {status === 'loading' && (
         <>
           <p>Backend is starting... please wait</p>
@@ -54,6 +83,7 @@ export default function WakeUpScreen({ onReady }) {
         </>
       )}
 
+      {/* Ready */}
       {status === 'ready' && <p>Loading app...</p>}
 
       <style>{`
